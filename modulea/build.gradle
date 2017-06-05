@@ -1,0 +1,60 @@
+apply from: "${rootProject.rootDir}/common_config.gradle"
+if (project.ext.isModuleDebug) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
+
+
+android {
+    compileSdkVersion project.ext.compilesSdkVersion
+    buildToolsVersion project.ext.buildToolVersion
+
+    defaultConfig {
+        if (project.ext.isModuleDebug) {
+            applicationId project.ext.applicationId
+        }
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    sourceSets {
+        main {
+            if (project.ext.isModuleDebug) {
+                manifest.srcFile 'src/debug/AndroidManifest.xml'
+//                res.srcDirs = ['src/debug/res']
+
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java {
+                    //排除java/debug文件夹下的所有文件
+                    exclude 'src/debug/**'
+                }
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
+    compile "com.android.support:support-v4:${project.ext.supportLibVersion}"
+    compile 'com.spinytech.ma:macore:0.2.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+}

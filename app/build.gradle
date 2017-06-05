@@ -1,0 +1,43 @@
+apply from: "${rootProject.rootDir}/common_config.gradle"
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion project.ext.compilesSdkVersion
+    buildToolsVersion project.ext.buildToolVersion
+    defaultConfig {
+        applicationId project.ext.applicationId
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        debug{
+            buildConfigField("boolean","isModuleDebug","${project.ext.isModuleDebug}")
+        }
+        release {
+            buildConfigField("boolean","isModuleDebug","${project.ext.isModuleDebug}")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    if (!project.ext.isModuleDebug) {
+        compile project(':modulea')
+        compile project(':moduleb')
+    }
+    compile "com.android.support:appcompat-v7:${project.ext.supportLibVersion}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile "com.android.support:design:${project.ext.supportLibVersion}"
+    compile 'com.spinytech.ma:macore:0.2.1'
+    compile "com.android.support:support-vector-drawable:${project.ext.supportLibVersion}"
+    testCompile 'junit:junit:4.12'
+}
