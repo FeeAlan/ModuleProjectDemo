@@ -108,7 +108,45 @@
         }
         
         ```
+     3. 主模块中加入以下代码：
+          build.gradle 中
+          
+          ```
+          buildTypes {
+                  debug{
+                      buildConfigField("boolean","isModuleDebug","${project.ext.isModuleDebug}")
+                      ....
+                  }
+                  release {
+                      buildConfigField("boolean","isModuleDebug","${project.ext.isModuleDebug}")
+                      .....
+                  }
+              }
+              
+              
+              
+           dependencies {
+               if (!project.ext.isModuleDebug) {
+                   compile project(':modulea')
+                   compile project(':moduleb')
+               }
+               .....
+           }   
+              
+              
+          ```
+         
+        MyApplication 中
+        ```
+        if (!BuildConfig.isModuleDebug) {
+                    registerApplicationLogic("com.fee.moduleprojectdemo", 998, ModuleAlogic.class);
+                    registerApplicationLogic("com.fee.moduleprojectdemo", 998, ModuleBlogic.class);
+        }
+        ```
 
-4. 现在就可以单独运行某个模块了
+4. 现在就可以单独运行某个模块了，修改 common_config.gradle 中的
+isModuleDebug 的值就可以随时切换是单独运行模块还是整合到一起运行了。
        
-       
+#### 注意：
+在可以运行模块的时候，也就是当独运行模块时，如果创建 Activity 、service等都需要在两个 AndroidManifests 文件
+注册，debug 下添加是为了 模块 单独运行，main 下添加是为了能整个项目能运行
