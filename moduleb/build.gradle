@@ -25,7 +25,6 @@ android {
         main {
             if (project.ext.isModuleDebug) {
                 manifest.srcFile 'src/debug/AndroidManifest.xml'
-//                res.srcDirs = ['src/main/res']
 
             } else {
                 manifest.srcFile 'src/main/AndroidManifest.xml'
