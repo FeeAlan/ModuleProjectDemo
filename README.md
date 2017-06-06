@@ -150,3 +150,5 @@ isModuleDebug 的值就可以随时切换是单独运行模块还是整合到一
 #### 注意：
 在可以运行模块的时候，也就是当独运行模块时，如果创建 Activity 、service等都需要在两个 AndroidManifests 文件
 注册，debug 下添加是为了 模块 单独运行，main 下添加是为了能整个项目能运行
+
+运行命令 `gradlew findbugs` 可以查看测试报告具体见文章[http://blog.csdn.net/it_talk/article/details/50420581](http://blog.csdn.net/it_talk/article/details/50420581)

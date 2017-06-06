@@ -41,3 +41,5 @@ dependencies {
     compile "com.android.support:support-vector-drawable:${project.ext.supportLibVersion}"
     testCompile 'junit:junit:4.12'
 }
+
+apply from: "${rootProject.rootDir}/test_config.gradle"
